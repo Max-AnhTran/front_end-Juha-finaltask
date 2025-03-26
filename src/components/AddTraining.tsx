@@ -61,7 +61,12 @@ export default function AddTraining(props: any) {
 
     const addTraining = () => {
         console.log(training);
-        if (!training.date || !training.duration || !training.activity || !training.customer) {
+        if (
+            !training.date ||
+            !training.duration ||
+            !training.activity ||
+            !training.customer
+        ) {
             alert("Please fill in all the fields.");
             return;
         }
@@ -91,7 +96,7 @@ export default function AddTraining(props: any) {
                 <DialogTitle>Add New Training</DialogTitle>
                 <DialogContent>
                     <TextField
-                        id="standard-select-currency"
+                        id="standard-select-customer"
                         select
                         margin="dense"
                         name="customer"
@@ -112,9 +117,12 @@ export default function AddTraining(props: any) {
                             },
                         }}
                     >
-                        {customers.map((option) => (
-                            <MenuItem key={option.id} value={option._links?.self.href}>
-                                {option.firstname + " " + option.lastname}
+                        {customers.map((customer, index) => (
+                            <MenuItem
+                                key={customer.id || index}
+                                value={customer._links?.self.href}
+                            >
+                                {customer.firstname + " " + customer.lastname}
                             </MenuItem>
                         ))}
                     </TextField>
@@ -128,7 +136,12 @@ export default function AddTraining(props: any) {
                         fullWidth
                         variant="standard"
                     />
-                    <Stack direction="row" spacing={2} mt={2} alignItems="center">
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        mt={2}
+                        alignItems="center"
+                    >
                         <DatePicker
                             name="date"
                             label="Date"

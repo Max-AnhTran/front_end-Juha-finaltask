@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
-import { ColDef } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, ColDef } from "ag-grid-community";
 
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
@@ -14,6 +13,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function CustomerList() {
     const [customers, setCustomers] = useState<Customer[]>([]);
+    const gridRef = useRef<AgGridReact>(null);
 
     const fetchData = async () => {
         try {
@@ -105,6 +105,10 @@ export default function CustomerList() {
         }
     };
 
+    const exportToCSV = useCallback(() => {
+        gridRef.current!.api.exportDataAsCsv();
+    }, []);
+
     const [columnDefs] = useState<ColDef<Customer>[]>([
         {
             field: "firstname",
@@ -194,11 +198,22 @@ export default function CustomerList() {
                 }}
             >
                 <AddCustomer saveCustomer={saveCustomer} />
+                <Button
+                    onClick={exportToCSV}
+                    variant="outlined"
+                    color="success"
+                >
+                    Export to CSV
+                </Button>
                 <Button variant="outlined" onClick={resetData}>
                     Reset Data
                 </Button>
             </div>
-            <AgGridReact rowData={customers} columnDefs={columnDefs} />
+            <AgGridReact
+                ref={gridRef}
+                rowData={customers}
+                columnDefs={columnDefs}
+            />
         </div>
     );
 }

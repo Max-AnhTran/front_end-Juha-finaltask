@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Home from '../pages/Home';
 import Customers from '../pages/Customers';
 import Trainings from '../pages/Trainings';
+import CalendarPage from '../pages/Calendar';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -50,6 +51,7 @@ export default function BasicTabs() {
           <Tab label="HOME" {...a11yProps(0)} />
           <Tab label="CUSTOMERS" {...a11yProps(1)} />
           <Tab label="TRAININGS" {...a11yProps(2)} />
+          <Tab label="CALENDAR" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -60,6 +62,9 @@ export default function BasicTabs() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <Trainings />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <CalendarPage />
       </CustomTabPanel>
     </Box>
   );

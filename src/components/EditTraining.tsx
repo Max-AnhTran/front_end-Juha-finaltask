@@ -56,13 +56,19 @@ export default function EditTraining(props: any) {
     };
 
     const handleClickOpen = async () => {
-        const customerLink = await getCustomerLink(props.training._links.customer.href);
+        const customerLink = await getCustomerLink(
+            props.training._links.customer.href
+        );
         if (customerLink) {
-            setTraining({ date: props.training.date, duration: props.training.duration, activity: props.training.activity, customer: customerLink });
+            setTraining({
+                date: props.training.date,
+                duration: props.training.duration,
+                activity: props.training.activity,
+                customer: customerLink,
+            });
         }
         setOpen(true);
     };
-    
 
     const handleClose = () => {
         setOpen(false);
@@ -105,7 +111,7 @@ export default function EditTraining(props: any) {
             >
                 <DialogTitle>Edit Training</DialogTitle>
                 <DialogContent>
-                <TextField
+                    <TextField
                         id="standard-select-currency"
                         select
                         margin="dense"
@@ -127,9 +133,12 @@ export default function EditTraining(props: any) {
                             },
                         }}
                     >
-                        {customers.map((option) => (
-                            <MenuItem key={option.id} value={option._links?.self.href}>
-                                {option.firstname + " " + option.lastname}
+                        {customers.map((customer, index) => (
+                            <MenuItem
+                                key={customer.id || index}
+                                value={customer._links?.self.href}
+                            >
+                                {customer.firstname + " " + customer.lastname}
                             </MenuItem>
                         ))}
                     </TextField>
