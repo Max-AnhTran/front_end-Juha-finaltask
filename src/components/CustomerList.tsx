@@ -213,6 +213,8 @@ export default function CustomerList() {
                 ref={gridRef}
                 rowData={customers}
                 columnDefs={columnDefs}
+                pagination={true}
+                paginationAutoPageSize
             />
         </div>
     );

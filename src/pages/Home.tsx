@@ -1,7 +1,10 @@
+import '../assets/css/home.css';
+
 function Home() {
     return (
-        <div>
-            <h1>Home</h1>
+        <div className="home">
+            <h1>Welcome to Fitness Center</h1>
+            <img src="./src/assets/img/home.jpg" alt="Fitness Center" />
         </div>
     )
 }

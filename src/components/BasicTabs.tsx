@@ -7,6 +7,7 @@ import Home from '../pages/Home';
 import Customers from '../pages/Customers';
 import Trainings from '../pages/Trainings';
 import CalendarPage from '../pages/Calendar';
+import Statistics from '../pages/Statistics';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,6 +53,7 @@ export default function BasicTabs() {
           <Tab label="CUSTOMERS" {...a11yProps(1)} />
           <Tab label="TRAININGS" {...a11yProps(2)} />
           <Tab label="CALENDAR" {...a11yProps(3)} />
+          <Tab label="STATISTICS" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -65,6 +67,9 @@ export default function BasicTabs() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
         <CalendarPage />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={4}>
+        <Statistics />
       </CustomTabPanel>
     </Box>
   );
