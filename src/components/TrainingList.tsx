@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { ColDef } from "ag-grid-community";
+import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 
 import AddTraining from "./AddTraining";
@@ -11,19 +11,14 @@ import dayjs from "dayjs";
 import { Training } from "../types";
 import DeleteTraining from "./DeleteTraining";
 import { getTrainingsData } from "../services/TrainingService";
+import ConsecutiveSnackbars from "./SnackBar";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function TrainingList() {
     const [trainings, setTrainings] = useState<Training[]>([]);
+    const [snackMessage, setSnackMessage] = useState<string | null>(null);
 
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * Asynchronously fetches training data from the API and updates the `trainings` state.
- * Logs the fetched data to the console. Handles errors by logging them.
- */
-
-/******  f65c5a14-9b1f-40ba-a011-dda8786ff7f6  *******/
     const fetchData = async () => {
         try {
             const data = await getTrainingsData();
@@ -31,6 +26,7 @@ export default function TrainingList() {
             setTrainings(data || []);
         } catch (error) {
             console.error("Error fetching trainings:", error);
+            setTrainings([]);
         }
     };
 
@@ -54,6 +50,7 @@ export default function TrainingList() {
             const text = await response.text();
 
             if (text === "DB reset done") {
+                setSnackMessage("DB reset done");
                 await fetchData();
             } else {
                 throw new Error("Unexpected response text");
@@ -66,7 +63,8 @@ export default function TrainingList() {
     const deleteTraining = async (link: string) => {
         try {
             await fetch(link, { method: "DELETE" });
-            fetchData();
+            setSnackMessage("Training deleted successfully");
+            await fetchData();
         } catch (error) {
             console.error("Error deleting training:", error);
         }
@@ -85,7 +83,8 @@ export default function TrainingList() {
 
             if (!response.ok) throw new Error("Network response was not ok");
 
-            fetchData();
+            setSnackMessage("Training added successfully");
+            await fetchData();
         } catch (error) {
             console.error("Error saving training:", error);
         }
@@ -101,13 +100,14 @@ export default function TrainingList() {
 
             if (!response.ok) throw new Error("Network response was not ok");
 
-            fetchData();
+            setSnackMessage("Training edited successfully");
+            await fetchData();
         } catch (error) {
             console.error("Error updating training:", error);
         }
     };
 
-    const columnDefs: ColDef<Training>[] = [
+    const columnDefs: ColDef<Training>[] =  useMemo(() => [
         {
             headerName: "Date",
             field: "date",
@@ -142,7 +142,7 @@ export default function TrainingList() {
             headerName: "",
             flex: 0.5,
             cellStyle: { textAlign: "center" },
-            cellRenderer: (row: any) => (
+            cellRenderer: (row: ICellRendererParams<Training>) => (
                 <EditTraining
                     training={row.data}
                     updateTraining={updateTraining}
@@ -155,7 +155,7 @@ export default function TrainingList() {
             headerName: "",
             flex: 0.5,
             cellStyle: { textAlign: "center" },
-            cellRenderer: (row: any) => (
+            cellRenderer: (row: ICellRendererParams<Training>) => (
                 <DeleteTraining
                     training={row.data}
                     deleteTraining={deleteTraining}
@@ -164,7 +164,7 @@ export default function TrainingList() {
             sortable: false,
             filter: false,
         },
-    ];
+    ], []);
 
     return (
         <div style={{ height: "calc(100vh - 250px)", width: "100%" }}>
@@ -182,10 +182,14 @@ export default function TrainingList() {
                 </Button>
             </div>
             <AgGridReact
-                rowData={trainings}
-                columnDefs={columnDefs}
+                rowData={trainings || []}
+                columnDefs={columnDefs || []}
                 pagination
                 paginationAutoPageSize
+            />
+            <ConsecutiveSnackbars
+                snackMessage={snackMessage}
+                setSnackMessage={setSnackMessage}
             />
         </div>
     );

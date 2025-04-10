@@ -38,5 +38,6 @@ import { Customer, Training } from "../types";
             return updatedTrainings;
         } catch (error) {
             console.error("Error fetching trainings:", error);
+            return [];
         }
     };

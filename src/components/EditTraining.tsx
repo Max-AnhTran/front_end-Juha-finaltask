@@ -118,7 +118,7 @@ export default function EditTraining(props: any) {
                         name="customer"
                         label="Customer"
                         variant="standard"
-                        defaultValue={training.customer}
+                        value={training.customer || ""}
                         onChange={handleInputChange}
                         fullWidth
                         slotProps={{

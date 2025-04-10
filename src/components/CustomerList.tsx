@@ -8,12 +8,14 @@ import { Button } from "@mui/material";
 
 import { Customer } from "../types";
 import DeleteCustomer from "./DeleteCustomer";
+import ConsecutiveSnackbars from "./SnackBar";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function CustomerList() {
     const [customers, setCustomers] = useState<Customer[]>([]);
     const gridRef = useRef<AgGridReact>(null);
+    const [snackMessage, setSnackMessage] = useState<string | null>(null);
 
     const fetchData = async () => {
         try {
@@ -60,6 +62,7 @@ export default function CustomerList() {
         console.log("Delete clicked for:", link);
         try {
             await fetch(link, { method: "DELETE" });
+            setSnackMessage("Customer deleted successfully");
             await fetchData();
         } catch (error) {
             console.error("Error deleting customer:", error);
@@ -81,6 +84,7 @@ export default function CustomerList() {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
+            setSnackMessage("Customer added successfully");
             await fetchData();
         } catch (error) {
             console.error("Error saving customer:", error);
@@ -99,6 +103,7 @@ export default function CustomerList() {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
+            setSnackMessage("Customer edited successfully");
             await fetchData();
         } catch (error) {
             console.error("Error updating customer:", error);
@@ -215,6 +220,10 @@ export default function CustomerList() {
                 columnDefs={columnDefs}
                 pagination={true}
                 paginationAutoPageSize
+            />
+            <ConsecutiveSnackbars
+                snackMessage={snackMessage}
+                setSnackMessage={setSnackMessage}
             />
         </div>
     );
