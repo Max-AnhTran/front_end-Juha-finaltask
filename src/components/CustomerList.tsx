@@ -111,7 +111,18 @@ export default function CustomerList() {
     };
 
     const exportToCSV = useCallback(() => {
-        gridRef.current!.api.exportDataAsCsv();
+        gridRef.current!.api.exportDataAsCsv({
+            fileName: "customers.csv",
+            columnKeys: [
+                "firstname",
+                "lastname",
+                "streetaddress",
+                "postcode",
+                "city",
+                "email",
+                "phone",
+            ],
+        });
     }, []);
 
     const [columnDefs] = useState<ColDef<Customer>[]>([
