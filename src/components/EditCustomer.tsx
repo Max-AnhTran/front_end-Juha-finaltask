@@ -20,7 +20,7 @@ export default function EditCustomer(props: any) {
     });
 
     const handleClickOpen = () => {
-        console.log(props.customer);
+        // console.log(props.customer);
         setCustomer(props.customer);
         setOpen(true);
     };
@@ -51,13 +51,7 @@ export default function EditCustomer(props: any) {
                         component: "form",
                         onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
                             event.preventDefault();
-                            const formData = new FormData(event.currentTarget);
-                            const formJson = Object.fromEntries(
-                                (formData as any).entries()
-                            );
-                            const email = formJson.email;
-                            console.log(email);
-                            handleClose();
+                            editCustomer();
                         },
                     },
                 }}

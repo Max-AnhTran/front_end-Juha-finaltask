@@ -22,7 +22,7 @@ export default function TrainingList() {
     const fetchData = async () => {
         try {
             const data = await getTrainingsData();
-            console.log(data);
+            // console.log(data);
             setTrainings(data || []);
         } catch (error) {
             console.error("Error fetching trainings:", error);

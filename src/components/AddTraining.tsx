@@ -60,7 +60,7 @@ export default function AddTraining(props: any) {
     };
 
     const addTraining = () => {
-        console.log(training);
+        // console.log(training);
         if (
             !training.date ||
             !training.duration ||

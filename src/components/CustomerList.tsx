@@ -59,7 +59,7 @@ export default function CustomerList() {
     };
 
     const deleteCustomer = async (link: any) => {
-        console.log("Delete clicked for:", link);
+        // console.log("Delete clicked for:", link);
         try {
             await fetch(link, { method: "DELETE" });
             setSnackMessage("Customer deleted successfully");
